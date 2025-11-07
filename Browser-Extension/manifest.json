@@ -1,0 +1,20 @@
+{
+  "name": "Time 2 Help",
+  "description": "V1.1: Tracks where you visited and for how long",
+  "version": "1.1",
+  "permissions": ["storage", "tabs"],
+  "host_permissions": ["<all_urls>"],   
+  "manifest_version": 3,
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+        "16": "time-2-help-x16.png",
+        "48": "time-2-help-x48.png",
+        "128": "time-2-help.png"
+    }
+  }, 
+
+  "background": {
+    "service_worker": "background.js"
+  }
+}

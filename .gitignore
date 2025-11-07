@@ -1,0 +1,6 @@
+Browser-Extension-Cloud-Stripe/functions/node_modules
+Browser-Extension-Cloud-Stripe/functions/.env
+Browser-Extension-Cloud-Stripe/.runtimeconfig.json
+Browser-Extension-Cloud-Stripe/functions/.eslintrc.js
+
+Browser-Extension-Cloud-Stripe/extension/firebase-init.js

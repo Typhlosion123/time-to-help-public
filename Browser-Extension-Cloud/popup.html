@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Time 2 Help</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      width: 320px; /* Slightly wider */
+      padding: 0;
+      box-sizing: border-box;
+      background-color: #f4f4f4;
+    }
+    .hidden { display: none !important; }
+
+    /* --- View Container --- */
+    .view-container {
+      padding: 15px;
+      box-sizing: border-box;
+    }
+
+    /* --- Auth Forms --- */
+    h3 { margin-top: 0; text-align: center; }
+    input[type="email"], input[type="password"], input[type="number"] {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 10px;
+      box-sizing: border-box;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    .btn-group { display: flex; justify-content: space-between; margin-top: 10px; }
+    button {
+      padding: 10px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    button:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+    }
+    .btn-primary { background-color: #007bff; color: white; width: 48%; }
+    .btn-primary-full { background-color: #007bff; color: white; width: 100%; }
+    .btn-secondary { background-color: #6c757d; color: white; width: 100%; margin-top: 10px; }
+    .btn-danger { background-color: #dc3545; color: white; }
+    .btn-link { background: none; color: #007bff; text-decoration: underline; padding: 5px 0; width: auto; }
+    
+    #error-message, #verify-message, #forgot-message, #hands-message {
+      color: red;
+      font-size: 0.9em;
+      margin-top: 10px;
+      min-height: 1.2em;
+      text-align: center;
+    }
+    #verify-message, #forgot-message, #hands-message { color: green; }
+    
+    .validation-errors { font-size: 0.8em; margin-top: 5px; }
+    .validation-errors div { margin-bottom: 2px; }
+
+    /* --- App Views --- */
+    #app-nav {
+      display: flex;
+      justify-content: space-around;
+      background-color: #fff;
+      border-bottom: 1px solid #ddd;
+    }
+    .nav-btn {
+      flex: 1;
+      padding: 12px 0;
+      text-align: center;
+      background: none;
+      border: none;
+      border-bottom: 3px solid transparent;
+      font-weight: bold;
+      color: #666;
+      cursor: pointer;
+    }
+    .nav-btn.active {
+      color: #007bff;
+      border-bottom-color: #007bff;
+    }
+
+    /* --- Logged In Header --- */
+    #app-header {
+      background-color: #fff;
+      padding: 10px 15px;
+      border-bottom: 1px solid #eee;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.9em;
+    }
+    #user-email { font-weight: bold; color: #333; word-wrap: break-word; max-width: 200px; }
+    #btn-logout { width: auto; background-color: #dc3545; color: white; padding: 5px 10px; font-size: 0.8em; }
+
+    /* --- Tracker View --- */
+    .form-group { margin-bottom: 15px; background: #fff; padding: 10px; border-radius: 5px; }
+    .form-group h4 { margin-top: 0; margin-bottom: 10px; }
+    .form-group input, .form-group select {
+      width: 100%; padding: 8px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px;
+    }
+    /* UPDATED: Removed inline-group styles, not needed */
+    
+    #urlList { list-style: none; padding: 0; margin: 0; }
+    #urlList li {
+      background: #fff;
+      padding: 10px;
+      border-radius: 5px;
+      margin-bottom: 8px;
+      position: relative;
+    }
+    #urlList li strong { font-size: 1.1em; color: #333; }
+    #urlList li .time, #urlList li .limit, #urlList li .session-time {
+      display: block; font-size: 0.9em; color: #555; margin-top: 4px;
+    }
+    #urlList li .session-time { color: #007bff; font-weight: bold; }
+    #urlList li.over-limit { border-left: 4px solid #dc3545; }
+    #urlList li.over-limit .time { color: #dc3545; font-weight: bold; }
+    .editBtn {
+      position: absolute; top: 10px; right: 10px; background: none; border: none;
+      color: #aaa; font-size: 1.2em; cursor: pointer; padding: 5px;
+    }
+    .editBtn:hover { color: #007bff; }
+
+    /* --- Helping Hands View --- */
+    #helping-hands-view { text-align: center; }
+    #hands-display {
+      font-size: 4em;
+      font-weight: bold;
+      color: #007bff;
+      margin: 20px 0;
+    }
+    .hands-controls {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+    .hands-controls input { flex: 1; }
+    .hands-controls button {
+      flex: 0 0 70px;
+      padding: 8px;
+    }
+    #btn-add-hands { background-color: #28a745; color: white; }
+    #btn-use-hands { background-color: #ffc107; color: #333; }
+    
+    /* --- Modals --- */
+    .modal-backdrop {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.5);
+      z-index: 100;
+    }
+    .modal {
+      position: fixed;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 300px;
+      background: #fff;
+      border-radius: 8px;
+      z-index: 101;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+    .modal h4 { margin-top: 0; }
+    .modal-btn-group { display: flex; justify-content: space-between; margin-top: 20px; gap: 10px; }
+    .modal-btn-group button { flex: 1; }
+
+    /* --- Checkbox Label --- */
+    .checkbox-label {
+      display: flex;
+      align-items: center;
+      margin-top: 15px;
+      font-size: 0.9em;
+    }
+    .checkbox-label input {
+      width: auto;
+      margin-bottom: 0;
+      margin-right: 8px;
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- 
+  =================================
+  AUTHENTICATION VIEWS
+  =================================
+  -->
+  <div id="login-view" class="view-container">
+    <h3 id="form-title">Login</h3>
+    <input type="email" id="login-email" placeholder="Email">
+    <input type="password" id="login-pass" placeholder="Password">
+    <input type="password" id="login-pass-confirm" placeholder="Confirm Password" class="hidden">
+    
+    <div class="validation-errors hidden">
+      <div id="pass-length-error" class="hidden">X At least 8 characters</div>
+      <div id="pass-number-error" class="hidden">X At least one number</div>
+      <div id="pass-special-error" class="hidden">X At least one special character</div>
+      <div id="pass-match-error" class="hidden">X Passwords match</div>
+    </div>
+    
+    <div id="error-message"></div>
+
+    <div class="btn-group">
+      <button id="btn-login" class="btn-primary">Login</button>
+      <button id="btn-signup-submit" class="btn-primary hidden">Sign Up</button>
+    </div>
+    <div class="btn-group">
+      <button id="btn-show-signup" class="btn-link">Don't have an account? Sign Up</button>
+      <button id="btn-show-login" class="btn-link hidden">Already have an account? Login</button>
+    </div>
+    <button id="btn-show-forgot" class="btn-link">Forgot Password?</button>
+  </div>
+
+  <div id="verify-view" class="view-container hidden">
+    <h3>Verify Your Email</h3>
+    <p>A verification email has been sent to your inbox. Please click the link to continue.</p>
+    <div id="verify-message" style="color:green; text-align: center;"></div>
+    <button id="btn-resend" class="btn-primary-full">Resend Email</button>
+    <button id="btn-logout-verify" class="btn-secondary">Logout</button>
+  </div>
+
+  <div id="forgot-view" class="view-container hidden">
+    <h3>Reset Password</h3>
+    <p>Enter your email and we'll send you a link to reset your password.</p>
+    <input type="email" id="forgot-email" placeholder="Email">
+    <div id="forgot-message"></div>
+    <button id="btn-forgot-submit" class="btn-primary-full">Send Reset Email</button>
+    <button id="btn-back-to-login" class="btn-secondary">Back to Login</button>
+  </div>
+
+
+  <!-- 
+  =================================
+  MAIN APP VIEW (Logged In & Verified)
+  =================================
+  -->
+  <div id="app-view" class="hidden">
+    
+    <div id="app-header">
+      <span id="user-email"></span>
+      <button id="btn-logout">Logout</button>
+    </div>
+
+    <nav id="app-nav">
+      <button id="nav-btn-tracker" class="nav-btn active">Tracker</button>
+      <button id="nav-btn-hands" class="nav-btn">Helping Hands</button>
+    </nav>
+
+    <div id="tracker-view" class="view-container">
+      <div class="form-group">
+        <h4>Add New Site to Track</h4>
+        <input type="text" id="newUrl" placeholder="e.g., youtube.com" style="margin-bottom: 10px;">
+        <!-- UPDATED: Removed inline-group div, made limit input full width -->
+        <input type="number" id="newLimit" placeholder="Limit (minutes)">
+        <!-- REMOVED: Weekly/Daily select -->
+        <button id="addUrlBtn" class="btn-primary-full" style="margin-top: 10px;">Add Site</button>
+      </div>
+
+      <ul id="urlList">
+        <!-- List items will be rendered here by JS -->
+      </ul>
+
+      <button id="clearData" class="btn-secondary">Clear All Time Data</button>
+    </div>
+
+    <div id="helping-hands-view" class="view-container hidden">
+      <h3>Helping Hands</h3>
+      <p>Add or use your available "hands" to help out!</p>
+      
+      <div id="hands-display">0</div>
+      
+      <div id="hands-message" style="color:green;"></div>
+
+      <div class="hands-controls">
+        <input type="number" id="hands-input" placeholder="Enter amount">
+        <button id="btn-add-hands">Add</button>
+        <button id="btn-use-hands">Use</button>
+      </div>
+    </div>
+
+  </div> <!-- End #app-view -->
+
+
+  <!-- 
+  =================================
+  MODALS
+  =================================
+  -->
+
+  <!-- Confirmation Modal -->
+  <div id="confirm-edit-backdrop" class="modal-backdrop hidden"></div>
+  <div id="confirm-edit-modal" class="modal hidden">
+    <h4>Confirm Edit</h4>
+    <p>Please confirm you wish to edit the settings for <strong id="confirm-edit-url">...</strong>.</p>
+    <label class="checkbox-label">
+      <input type="checkbox" id="confirm-edit-checkbox">
+      I understand this will change my tracking settings.
+    </label>
+    <div class="modal-btn-group">
+      <button id="confirm-edit-cancel" class="btn-secondary">Cancel</button>
+      <button id="confirm-edit-continue" class="btn-primary" disabled>Continue</button>
+    </div>
+  </div>
+
+  <!-- Edit Modal -->
+  <div id="edit-modal-backdrop" class="modal-backdrop hidden"></div>
+  <div id="edit-modal" class="modal hidden">
+    <h4>Edit Site</h4>
+    <div id="edit-modal-url">example.com</div>
+    
+    <label for="edit-limit">Limit (minutes, 0 for no limit)</label>
+    <input type="number" id="edit-limit" placeholder="Limit (minutes)">
+    
+    <!-- REMOVED: Weekly/Daily select -->
+    
+    <div class="modal-btn-group">
+      <button id="edit-modal-cancel" class="btn-secondary">Cancel</button>
+      <button id="edit-modal-save" class="btn-primary">Save</button>
+    </div>
+    <button id="edit-modal-remove" class="btn-danger" style="width: 100%; margin-top: 10px;">Remove from Tracker</button>
+  </div>
+
+
+  <script type="module" src="./popup.js"></script>
+</body>
+</html>
+

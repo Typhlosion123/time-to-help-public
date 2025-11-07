@@ -1,0 +1,28 @@
+rules_version = '2';
+service cloud.firestore {
+match /databases/{database}/documents {
+
+// userSettings collection
+match /userSettings/{userId} {
+  // A user can read their own document
+  allow read: if request.auth != null && request.auth.uid == userId;
+  
+  // --- CREATE Rule (for new users) ---
+  allow create: if request.auth != null && request.auth.uid == userId
+                // Must initialize wallet and donations to 0
+                && request.resource.data.walletBalance == 0
+                && request.resource.data.totalDonated == 0;
+                 
+  // --- UPDATE Rule (for existing users) ---
+  allow update: if request.auth != null && request.auth.uid == userId
+                // Block client-side updates to protected fields
+                && !("walletBalance" in request.writeFields)
+                && !("totalDonated" in request.writeFields);
+  
+  // --- DELETE Rule ---
+  allow delete: if request.auth != null && request.auth.uid == userId;
+}
+
+
+}
+}

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Time 2 Help</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      width: 350px; /* Increased width */
+      padding: 10px;
+    }
+    h2 {
+      margin-top: 0;
+    }
+    .add-container {
+      background-color: #f8f9fa;
+      border: 1px solid #dee2e6;
+      border-radius: 6px;
+      padding: 10px;
+    }
+    .add-container input[type="text"],
+    .add-container input[type="number"] {
+      padding: 5px;
+      margin-bottom: 5px;
+    }
+    .add-container input[type="text"] {
+      width: 200px;
+    }
+    .add-container input[type="number"] {
+      width: 70px;
+    }
+    .add-container select {
+      padding: 4px;
+    }
+    #addUrlBtn {
+      padding: 5px 10px;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 5px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+    }
+    
+    #urlList {
+      list-style-type: none;
+      padding-left: 0;
+      margin-top: 15px;
+    }
+    #urlList li {
+      padding: 8px;
+      border-bottom: 1px solid #eee;
+    }
+    #urlList li:last-child {
+      border-bottom: none;
+    }
+
+    .over-limit strong {
+      color: #dc3545;
+      font-weight: bold;
+    }
+    
+    .time, .limit, .session-time {
+      font-size: 0.9em;
+      display: inline-block;
+      margin-right: 10px;
+    }
+    .time { color: #555; }
+    .limit { color: #6c757d; }
+    .session-time { color: #007bff; font-weight: bold; }
+    
+    .removeBtn {
+      float: right;
+      border: none;
+      background: none;
+      color: #dc3545;
+      font-size: 1.2em;
+      cursor: pointer;
+    }
+    #clearData {
+      margin-top: 10px;
+      background-color: #ffc107;
+      border: none;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+  <h2>Tracked Sites</h2>
+  
+  <div id="error-message" style="color: red; background: #ffebee; border: 1px solid #dc3545; border-radius: 4px; padding: 8px; margin-bottom: 10px; display: none;"></div>
+  
+  <div class="add-container">
+    <div>
+      <input type="text" id="newUrl" placeholder="e.g., youtube.com" required>
+      <button id="addUrlBtn">Add</button>
+    </div>
+    <div>
+      <input type="number" id="newLimit" placeholder="Mins" min="1">
+      <select id="newLimitType">
+        <option value="daily">Daily</option>
+        <option value="weekly">Weekly</option>
+      </select>
+      <label for="newLimit">Limit</label>
+    </div>
+  </div>
+  
+  <ul id="urlList">
+  </ul>
+  
+  <button id="clearData">Clear All Time Data</button>
+
+  <script src="popup.js"></script>
